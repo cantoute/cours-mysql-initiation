@@ -67,9 +67,9 @@ standard des systèmes de gestion de bases de données (SGBD) relationnelles
 (SGBDR).
 C'est à la fois :
 
-- un langage d'interrogation de la base (ordre SELECT)
-- un langage de manipulation des données (LMD ; ordres UPDATE, INSERT, DELETE)
-- un langage de <a href="#definition-des-donnees">définition des données</a> (LDD ; ordres CREATE, ALTER, DROP),
+- un langage d'<a href="#interrogation-de-la-base--select">interrogation de la base (ordre SELECT)</a>
+- un langage de <a href="#Manipulation des données (UPDATE, INSERT, DELETE)">manipulation des données (LMD ; ordres UPDATE, INSERT, DELETE)</a>
+- un langage de <a href="#définitions-des-données">définition des données</a> (LDD ; ordres CREATE, ALTER, DROP),
 - un langage de contrôle de l'accès aux données (LCD ; ordres GRANT, REVOKE).
 
 Le langage SQL est utilisé par les principaux SGBDR : DB2, Oracle, Informix, Ingres, RDB,... Chacun de ces SGBDR a cependant sa propre variante du langage. Ce support de cours présente un noyau de commandes
@@ -487,7 +487,7 @@ Les types numériques sont :
   -- Empty set (0.000 sec)
   ```
 
-## Interrogation de la base : SELECT
+## Interrogation de la base (SELECT)
 
 ```
 SELECT
@@ -536,6 +536,23 @@ FROM
 WHERE
   1
   AND id = 1;
+```
+
+## Manipulation des données (UPDATE, INSERT, DELETE)
+
+```sql
+INSERT INTO `category` (
+  `id`,
+  `parent_id`,
+  `slug`,
+  `title`,
+  `content`,
+  `created_at`,
+  `updated_at`
+  ) VALUES
+  (1, NULL, 'non-classe', 'Non Classé', '', '2021-05-30 16:46:52', NULL),
+  (2, 2, 'cours', 'Cours', '', '2021-05-30 16:47:38', NULL),
+  (3, 2, 'mysql', 'MySQL', '', '2021-05-30 16:48:18', NULL);
 ```
 
 ## Définitions des données
