@@ -136,6 +136,10 @@ Le nom de la table peut être omis quand il n'y a pas d'ambiguïté sur la table
 
 ## Types de données
 
+[Documentation officielle MariaDB (en)](https://mariadb.com/kb/en/data-types/)
+
+La version française est très incomplète.
+
 ### Types numériques
 
 Les types numériques sont :
@@ -274,6 +278,156 @@ Les types numériques sont :
   |  255 | FF      | 377     | 11111111 |
   |   85 | 55      | 125     | 1010101  |
   +------+---------+---------+----------+
+  ```
+
+### Types chaîne de caractères
+
+- **CHAR(n)**
+
+  Chaîne de longueur fixe qui est toujours complétée à droite avec des espaces jusqu'à la longueur spécifiée lorsqu'elle est stockée. M représente la longueur de la colonne en caractères. La plage de M va de 0 à 255. Si M est omis, la longueur est de 1.
+
+  Les colonnes CHAR (0) peuvent contenir 2 valeurs : une chaîne vide ou NULL. Ces colonnes ne peuvent pas faire partie d'un index.
+
+- **VARCHAR(n)**
+
+  Equivalences :
+
+  ```sql
+  VARCHAR(30) CHARACTER SET utf8
+  NATIONAL VARCHAR(30)
+  NVARCHAR(30)
+  NCHAR VARCHAR(30)
+  NATIONAL CHARACTER VARYING(30)
+  NATIONAL CHAR VARYING(30)
+  ```
+
+  Espaces de fin (Trailing spaces) :
+
+  ```sql
+  CREATE TABLE strtest (v VARCHAR(10));
+  INSERT INTO strtest VALUES('Maria   ');
+
+  SELECT v='Maria',v='Maria   ' FROM strtest;
+  +-----------+--------------+
+  | v='Maria' | v='Maria   ' |
+  +-----------+--------------+
+  |         1 |            1 |
+  +-----------+--------------+
+
+  SELECT v LIKE 'Maria',v LIKE 'Maria   ' FROM strtest;
+  +----------------+-------------------+
+  | v LIKE 'Maria' | v LIKE 'Maria   ' |
+  +----------------+-------------------+
+  |              0 |                 1 |
+  +----------------+-------------------+
+  ```
+
+  Avec MariaDB le maximum est VARCHAR(65532) mais attention, l'index ne pourra pas dépasser 191 caractères en utf8mb4.
+  <blockquote>
+    InnoDB Limitations
+
+  MariaDB imposes a row-size limit of 65,535 bytes for the combined sizes of all columns. If the table contains BLOB or TEXT columns, these only count for 9 - 12 bytes in this calculation, given that their content is stored separately.
+  </blockquote>
+
+  La différence principale entre `VARCHAR()` et `TEXT` repose sur le fait que `VARCHAR()` peut être pleinement indexé.
+
+- **TEXT / MEDIUMTEXT / LONGTEXT**
+
+  Une colonne `TEXT` avec une longueur maximum de 65,535 (2<sup>16</sup> - 1) caractères (65k).
+
+  `MEDIUMTEXT` est une colonne `TEXT` avec une longueur de 16MB (2<sup>24</sup> - 1) caractères. (coût 3 bytes)
+
+  `LONGTEXT` est une colonne `TEXT` avec une longueur de 4GB (2<sup>32</sup> - 1) caractères. (coût 4 bytes)
+
+- **ENUM()**
+
+  Syntaxe :
+
+  ```
+  ENUM('value1','value2',...) [CHARACTER SET charset_name] [COLLATE collation_name]
+  ```
+
+  Index numérique
+
+  Les valeurs ENUM sont indexées numériquement dans l'ordre dans lequel elles sont définies, et le tri sera effectué dans cet ordre numérique. Nous suggérons de ne pas utiliser ENUM pour stocker des chiffres, car il y a peu ou pas d'avantage d'espace de stockage, et il est facile de confondre l'entier d'énumération avec la valeur numérique d'énumération en omettant les guillemets.
+
+  Un ENUM défini comme ENUM ('apple', 'orange', 'pear') aurait les valeurs d'index suivantes :
+
+  | Index | Value    |
+  | ----- | -------- |
+  | NULL  | NULL     |
+  | 0     | ''       |
+  | 1     | 'apple'  |
+  | 2     | 'orange' |
+  | 3     | 'pear'   |
+
+  Exemple
+
+  ```sql
+  CREATE TABLE fruits (
+    id INT NOT NULL auto_increment PRIMARY KEY,
+    fruit ENUM('apple','orange','pear'),
+    bushels INT
+  );
+
+  DESCRIBE fruits;
+  +---------+-------------------------------+------+-----+---------+----------------+
+  | Field   | Type                          | Null | Key | Default | Extra          |
+  +---------+-------------------------------+------+-----+---------+----------------+
+  | id      | int(11)                       | NO   | PRI | NULL    | auto_increment |
+  | fruit   | enum('apple','orange','pear') | YES  |     | NULL    |                |
+  | bushels | int(11)                       | YES  |     | NULL    |                |
+  +---------+-------------------------------+------+-----+---------+----------------+
+
+  INSERT INTO fruits
+      (fruit,bushels) VALUES
+      ('pear',20),
+      ('apple',100),
+      ('orange',25);
+
+  INSERT INTO fruits
+      (fruit,bushels) VALUES
+      ('avocado',10);
+  -- ERROR 1265 (01000): Data truncated for column 'fruit' at row 1
+
+  SELECT * FROM fruits;
+  +----+--------+---------+
+  | id | fruit  | bushels |
+  +----+--------+---------+
+  |  1 | pear   |      20 |
+  |  2 | apple  |     100 |
+  |  3 | orange |      25 |
+  +----+--------+---------+
+  ```
+
+  Différences avec d'autres DB
+
+  ```sql
+  CREATE TABLE students (
+    id INT NOT NULL auto_increment PRIMARY KEY,
+    full_name VARCHAR(128),
+    gender ENUM('M','F')
+  );
+
+  INSERT INTO students (full_name, gender)
+    VALUES
+      ('Michael Jackson', 'M'),
+      ('Bruce Lee', 'M'),
+      ('Agatha Christie', 'F'),
+      ('Marie Curie', 'F');
+
+  -- MariaDB
+  SELECT * FROM students WHERE gender > 'M';
+  -- Empty set (0.000 sec)
+
+  -- PostgreSQL
+  SELECT * FROM students WHERE gender > 'M';
+  id |    full_name    | gender
+  ----+-----------------+--------
+    3 | Agatha Christie | F
+    4 | Marie Curie     | F
+  (2 lignes)
+
   ```
 
 ---
