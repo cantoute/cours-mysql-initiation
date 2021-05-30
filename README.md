@@ -69,7 +69,7 @@ C'est à la fois :
 
 - un langage d'interrogation de la base (ordre SELECT)
 - un langage de manipulation des données (LMD ; ordres UPDATE, INSERT, DELETE)
-- un langage de définition des données (LDD ; ordres CREATE, ALTER, DROP),
+- un langage de <a href="#definition-des-donnees">définition des données</a> (LDD ; ordres CREATE, ALTER, DROP),
 - un langage de contrôle de l'accès aux données (LCD ; ordres GRANT, REVOKE).
 
 Le langage SQL est utilisé par les principaux SGBDR : DB2, Oracle, Informix, Ingres, RDB,... Chacun de ces SGBDR a cependant sa propre variante du langage. Ce support de cours présente un noyau de commandes
@@ -102,9 +102,20 @@ Les caractères suivants peuvent être une lettre, un chiffre, ou l'un des symbo
 
 Les voyelles accentuées ne sont pas acceptées. (Même si MySQL les acceptent, évitez absolument!)
 
-Un identificateur ne doit pas figurer dans la liste des mot clés réservés. Voici quelques mots clés que l'on risque d'utiliser comme identificateurs : ASSERT, ASSIGN, AUDIT, COMMENT, DATE, DECIMAL, DEFINITION, FILE, FORMAT, INDEX, LIST, MODE, OPTION, PARTITION, PRIVILEGES, PUBLIC, REF, REFERENCES, SELECT, SEQUENCE, SESSION, SET, TABLE, TYPE.
+Un identificateur ne doit pas figurer dans la liste des mot clés réservés. Voici quelques mots clés que l'on risque d'utiliser comme identificateurs : ASSERT, ASSIGN, AUDIT, COMMENT, DATE, DECIMAL, DEFINITION, FILE, FORMAT, INDEX, LIST, MODE, OPTION, PARTITION, PRIVILEGES, PUBLIC, REF, REFERENCES, SELECT, SEQUENCE, SESSION, SET, TABLE, TYPE, NAME...
 
 Voir la liste complète : [MariaDB Reserved Words](https://mariadb.com/kb/en/reserved-words/)
+
+Avec MySQL les mots réservés sont employés comme nom d'un identificateur (table, champ, base de données, etc...) sont "échapés" avec l'apostrophe inversé `
+
+Exemple :
+
+```sql
+CREATE TABLE `user` (
+  id SERIAL,
+  `name` VARCHAR(255)
+);
+```
 
 ### Tables
 
@@ -430,6 +441,162 @@ Les types numériques sont :
   (2 lignes)
 
   ```
+
+- **SET()**
+
+  Fonctionne un peut sur le même principe que `ENUM()` à la différence qu'un champ `ENUM` n'acceptera qu'une seule valeur, alors que `SET` peut en accepter plusieurs.
+
+  > A vérifier :
+  > Il fonctionne comme un filtre de valeurs acceptables sur un champ texte, et je ne crois pas qu'il profite pas des optimisations qu'apporte le type `ENUM`.
+
+  ```sql
+  CREATE TABLE set_test (
+    attrib SET('bold','italic','underline')
+  );
+
+  INSERT INTO set_test (attrib) VALUES ('bold');
+  INSERT INTO set_test (attrib) VALUES ('bold,italic');
+  INSERT INTO set_test (attrib) VALUES ('bold,italic,underline');
+
+  SELECT * FROM set_test WHERE FIND_IN_SET('italic', attrib);
+  +-----------------------+
+  | attrib                |
+  +-----------------------+
+  | bold,italic           |
+  | bold,italic,underline |
+  +-----------------------+
+
+
+  SELECT * FROM set_test WHERE attrib = 'bold';
+  +--------+
+  | attrib |
+  +--------+
+  | bold   |
+  +--------+
+
+  SELECT * FROM set_test WHERE attrib LIKE '%bold%';
+  +-----------------------+
+  | attrib                |
+  +-----------------------+
+  | bold                  |
+  | bold,italic           |
+  | bold,italic,underline |
+  +-----------------------+
+
+  SELECT * FROM set_test WHERE attrib = 'italic';
+  -- Empty set (0.000 sec)
+  ```
+
+## Interrogation de la base : SELECT
+
+```
+SELECT
+  [ALL | DISTINCT | DISTINCTROW]
+  select_expr [, select_expr ...]
+  [ FROM table_references
+    [WHERE where_condition]
+    [GROUP BY {col_name | expr | position} [ASC | DESC], ... [WITH ROLLUP]]
+    [HAVING where_condition]
+    [ORDER BY {col_name | expr | position} [ASC | DESC], ...]
+    [LIMIT {[offset,] row_count | row_count OFFSET offset } ]
+```
+
+```sql
+SELECT
+  id,
+  title
+FROM
+  category
+WHERE
+  `status` = 'Published'
+LIMIT 10000 OFFSET 10;
+-- Equivalent
+-- LIMIT 10, 10000;
+
+SELECT
+  p.id AS post_id,
+  p.title AS post_title,
+  p.`content` AS post_content,
+  c.title AS category_title
+FROM
+  post AS p,
+  category AS c
+WHERE
+  p.id = 1
+  AND p.category_id = c.id;
+
+SELECT
+  p.id AS post_id,
+  p.title AS post_title,
+  p.`content` AS post_content,
+  c.title AS category_title
+FROM
+  post AS p
+  JOIN category AS c ON (p.category_id = c.id)
+WHERE
+  1
+  AND id = 1;
+```
+
+## Définitions des données
+
+### CREATE
+
+#### CREATE DATABASE
+
+```
+CREATE [OR REPLACE] {DATABASE | SCHEMA} [IF NOT EXISTS] db_name
+    [create_specification] ...
+
+create_specification:
+    [DEFAULT] CHARACTER SET [=] charset_name
+  | [DEFAULT] COLLATE [=] collation_name
+  | COMMENT [=] 'comment'
+```
+
+Exemple :
+
+```sql
+CREATE OR REPLACE DATABASE ma_premiere_db
+  CHARACTER SET = 'utf8mb4'
+  COLLATE = 'utf8mb4_general_ci';
+
+-- équivalent à
+DROP DATABASE IF EXISTS ma_premiere_db;
+CREATE DATABASE ma_premiere_db;
+```
+
+#### CREATE TABLE
+
+Exemple :
+
+```sql
+CREATE TABLE `post` (
+  `id` int AUTO_INCREMENT PRIMARY KEY,
+  `status` enum('Draft','Waiting','Published') NOT NULL DEFAULT 'Draft',
+  `type` set('','Featured','News','Article','Video','Product') NOT NULL DEFAULT '',
+  `slug` varchar(255) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `content` longtext NOT NULL,
+  `comments_open` int NOT NULL DEFAULT 0,
+  `comments_count` int DEFAULT NULL,
+  `published_at` datetime DEFAULT current_timestamp(),
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_at` datetime DEFAULT NULL,
+  `category_id` int NOT NULL,
+  CONSTRAINT fk_post_category_id
+    FOREIGN KEY (category_id)
+    REFERENCES category (id)
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+```
+
+### ALTER
+
+Pour vous simplifier la vie vous utiliserez phpMyAdmin :)
+
+##
 
 ---
 
