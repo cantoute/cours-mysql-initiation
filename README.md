@@ -1,12 +1,10 @@
-# Cours MySql Initiation
+# Cours MySql - Initiation
 
 ## Base de Données Relationnelle et Transactionnelle (RDBMS)
 
 Le language standard pour dialoguer avec une base de données est le SQL
 
-<blockquote>
-  L’abréviation SQL signifie «&thinsp;Structured Query Language&thinsp;», un langage informatique servant à l’administration de structures de bases de données. Les opérations possibles comprennent des requêtes, des insertions, mises à jour et suppressions de fichiers de données.
-</blockquote>
+> L’abréviation SQL signifie «&thinsp;Structured Query Language&thinsp;», un langage informatique servant à l’administration de structures de bases de données. Les opérations possibles comprennent des requêtes, des insertions, mises à jour et suppressions de fichiers de données.
 
 ### Principaux produits disponibles
 
@@ -323,11 +321,10 @@ Les types numériques sont :
   ```
 
   Avec MariaDB le maximum est VARCHAR(65532) mais attention, l'index ne pourra pas dépasser 191 caractères en utf8mb4.
-  <blockquote>
-    InnoDB Limitations
 
-  MariaDB imposes a row-size limit of 65,535 bytes for the combined sizes of all columns. If the table contains BLOB or TEXT columns, these only count for 9 - 12 bytes in this calculation, given that their content is stored separately.
-  </blockquote>
+  > InnoDB Limitations
+  >
+  > MariaDB imposes a row-size limit of 65,535 bytes for the combined sizes of all columns. If the table contains BLOB or TEXT columns, these only count for 9 - 12 bytes in this calculation, given that their content is stored separately.
 
   La différence principale entre `VARCHAR()` et `TEXT` repose sur le fait que `VARCHAR()` peut être pleinement indexé.
 
@@ -338,6 +335,10 @@ Les types numériques sont :
   `MEDIUMTEXT` est une colonne `TEXT` avec une longueur de 16MB (2<sup>24</sup> - 1) caractères. (coût 3 bytes)
 
   `LONGTEXT` est une colonne `TEXT` avec une longueur de 4GB (2<sup>32</sup> - 1) caractères. (coût 4 bytes)
+
+- **BLOB / MEDIUMBLOB / LONGBLOB**
+
+  Un `BLOB` est un objet binaire de taille variable.
 
 - **ENUM()**
 
@@ -400,7 +401,7 @@ Les types numériques sont :
   +----+--------+---------+
   ```
 
-  Différences avec d'autres DB
+  Exemple de différence avec PostgreSQL
 
   ```sql
   CREATE TABLE students (
@@ -422,7 +423,7 @@ Les types numériques sont :
 
   -- PostgreSQL
   SELECT * FROM students WHERE gender > 'M';
-  id |    full_name    | gender
+   id |    full_name    | gender
   ----+-----------------+--------
     3 | Agatha Christie | F
     4 | Marie Curie     | F
