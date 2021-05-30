@@ -67,8 +67,8 @@ standard des systèmes de gestion de bases de données (SGBD) relationnelles
 (SGBDR).
 C'est à la fois :
 
-- un langage d'<a href="#interrogation-de-la-base--select">interrogation de la base (ordre SELECT)</a>
-- un langage de <a href="#Manipulation des données (UPDATE, INSERT, DELETE)">manipulation des données (LMD ; ordres UPDATE, INSERT, DELETE)</a>
+- un langage d'<a href="#interrogation-de-la-base-select">interrogation de la base (ordre SELECT)</a>
+- un langage de <a href="#manipulation-des-données-update-insert-delete">manipulation des données (LMD ; ordres UPDATE, INSERT, DELETE)</a>
 - un langage de <a href="#définitions-des-données">définition des données</a> (LDD ; ordres CREATE, ALTER, DROP),
 - un langage de contrôle de l'accès aux données (LCD ; ordres GRANT, REVOKE).
 
