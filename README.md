@@ -593,7 +593,7 @@ FROM
   post AS p
   JOIN category AS c ON (p.category_id = c.id)
 WHERE
-  p.status = 'Published',
+  p.status = \'Published\',
   AND p.id = :post_id';
 
 $st = $db->prepare($sql);
