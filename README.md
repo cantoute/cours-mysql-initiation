@@ -487,6 +487,40 @@ Les types numériques sont :
   -- Empty set (0.000 sec)
   ```
 
+---
+
+## Modélisation
+
+### Relation modèles 1 à n
+
+<img src="images/cms-1-n.png" />
+
+### Relation modèles n à n
+
+<img src="images/cms-n-n.png" />
+
+### Représentation d'un arbre (arborescence)
+
+<img src="images/relation-arbre.png" />
+
+### Le GRAPH
+
+```sql
+CREATE TABLE `point` (
+  id int,
+  `name` VARCHAR(64),
+  x FLOAT,
+  y FLOAT
+)
+
+CREATE TABLE simple_graph (
+  start_point_id int,
+  end_point_id int
+);
+```
+
+---
+
 ## Interrogation de la base (SELECT)
 
 ```
@@ -534,8 +568,30 @@ FROM
   post AS p
   JOIN category AS c ON (p.category_id = c.id)
 WHERE
-  1
-  AND id = 1;
+  p.status = 'Published'
+  AND p.id = 1;
+```
+
+```php
+<?php
+
+$sql = 'SELECT
+  p.id AS post_id,
+  p.title AS post_title,
+  p.`content` AS post_content,
+  c.title AS category_title
+FROM
+  post AS p
+  JOIN category AS c ON (p.category_id = c.id)
+WHERE
+  p.status = 'Published',
+  AND p.id = :post_id';
+
+$st = $db->prepare($sql);
+
+$st->execute(array(':post_id' => 1, ':post_status' => 3));
+$post_1 = $st->fetchAll();
+
 ```
 
 ## Manipulation des données (UPDATE, INSERT, DELETE)
@@ -553,6 +609,21 @@ INSERT INTO `category` (
   (1, NULL, 'non-classe', 'Non Classé', '', '2021-05-30 16:46:52', NULL),
   (2, 2, 'cours', 'Cours', '', '2021-05-30 16:47:38', NULL),
   (3, 2, 'mysql', 'MySQL', '', '2021-05-30 16:48:18', NULL);
+```
+
+```sql
+UPDATE `category`
+  SET `title` = 'MySQL / MariaDB'
+  WHERE
+    id = 3;
+```
+
+```sql
+DELETE p
+  FROM post p
+  JOIN category c ON c.id = p.category_id
+ WHERE
+   c.id = :category_id
 ```
 
 ## Définitions des données
