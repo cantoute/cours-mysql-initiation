@@ -535,6 +535,8 @@ SELECT
     [LIMIT {[offset,] row_count | row_count OFFSET offset } ]
 ```
 
+Exemples
+
 ```sql
 SELECT
   id,
@@ -546,7 +548,11 @@ WHERE
 LIMIT 10000 OFFSET 10;
 -- Equivalent
 -- LIMIT 10, 10000;
+```
 
+### Jointure interne ou droite (INNER JOIN)
+
+```sql
 SELECT
   p.id AS post_id,
   p.title AS post_title,
@@ -556,8 +562,9 @@ FROM
   post AS p,
   category AS c
 WHERE
-  p.id = 1
-  AND p.category_id = c.id;
+  p.category_id = c.id
+  AND p.status = 'Published'
+  AND p.id = 1;
 
 SELECT
   p.id AS post_id,
@@ -566,7 +573,7 @@ SELECT
   c.title AS category_title
 FROM
   post AS p
-  JOIN category AS c ON (p.category_id = c.id)
+  INNER JOIN category AS c ON (p.category_id = c.id)
 WHERE
   p.status = 'Published'
   AND p.id = 1;
@@ -593,6 +600,55 @@ $st->execute(array(':post_id' => 1, ':post_status' => 3));
 $post_1 = $st->fetchAll();
 
 ```
+
+### Jointure d'une table avec elle-même
+
+Il peut être utile de rassembler des informations venant d'une ligne d'une table avec des informations venant d'une autre ligne de la même table.
+
+Dans ce cas il faut renommer au moins l'une des deux tables en lui donnant un synonyme, afin de pouvoir préfixer sans ambiguïté chaque nom de colonne.
+
+```sql
+SELECT
+  c.title AS category_title,
+  cp.title AS category_parent_title
+FROM
+  category AS c
+  JOIN category AS cp ON (cp.id = c.parent_id)
+WHERE
+  -- exclure les catégories racine
+  c.parent_id NOT IS NULL
+  AND c.parent_id != c.id;
++-----------------+-----------------------+
+| category_title  | category_parent_title |
++-----------------+-----------------------+
+| MySQL / MariaDB | Cours                 |
++-----------------+-----------------------+
+
+```
+
+### Jointure externe (OUTER JOIN)
+
+```sql
+SELECT
+  p.id AS post_id,
+  p.title AS post_title,
+  c.title AS category_title
+  FROM
+    post AS p
+    RIGHT OUTER JOIN post_category AS pc ON (pc.post_id = p.id)
+    RIGHT OUTER JOIN category AS c ON (c.id = pc.category_id);
++---------+----------------------------+-----------------+
+| post_id | post_title                 | category_title  |
++---------+----------------------------+-----------------+
+|    NULL | NULL                       | Non Classé      |
+|       1 | MySQL Initiation (3 jours) | Cours           |
+|       1 | MySQL Initiation (3 jours) | MySQL / MariaDB |
++---------+----------------------------+-----------------+
+```
+
+La jointure externe ajoute des lignes fictives dans une des tables pour faire la correspondance avec les lignes de l'autre table. Dans l'exemple précédent, une ligne fictive (une catégorie fictive) est ajoutée dans la table des catégories si un post n'a pas de catégorie. Cette ligne aura tous ses attributs null, sauf celui des colonnes de jointure.
+
+`RIGHT` indique que la table dans laquelle on veut afficher toutes les lignes (la table `post`) est à droite de `RIGHT OUTER JOIN`. C'est dans l'autre table (celle de gauche) dans laquelle on ajoute des lignes fictives. De même, il existe `LEFT OUTER JOIN` qui est utilisé si on veut afficher toutes les lignes de la table de gauche (avant le `LEFT OUTER JOIN`) et `FULL OUTER JOIN` si on veut afficher toutes les lignes des deux tables.
 
 ## Manipulation des données (UPDATE, INSERT, DELETE)
 
