@@ -446,8 +446,10 @@ Les types numériques sont :
 
   Fonctionne un peut sur le même principe que `ENUM()` à la différence qu'un champ `ENUM` n'acceptera qu'une seule valeur, alors que `SET` peut en accepter plusieurs.
 
-  > A vérifier :
-  > Il fonctionne comme un filtre de valeurs acceptables sur un champ texte, et je ne crois pas qu'il profite pas des optimisations qu'apporte le type `ENUM`.
+  <!--
+    > A vérifier :
+    > Il fonctionne comme un filtre de valeurs acceptables sur un champ texte, et je ne crois pas qu'il profite pas des optimisations qu'apporte le type `ENUM`.
+  -->
 
   ```sql
   CREATE TABLE set_test (
