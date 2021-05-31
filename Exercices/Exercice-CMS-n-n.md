@@ -31,7 +31,7 @@ CREATE TABLE `post` (
   `comments_count` int DEFAULT NULL,
   `published_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `post_category` (
