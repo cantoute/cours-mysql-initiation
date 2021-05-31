@@ -77,13 +77,14 @@ Le language standard pour dialoguer avec une base de données est le SQL
 CREATE TABLE `point` (
   id int,
   `name` VARCHAR(64),
-  x FLOAT,
-  y FLOAT
+  lng FLOAT,
+  lat FLOAT
 )
 
 CREATE TABLE simple_graph (
   start_point_id int,
-  end_point_id int
+  end_point_id int,
+  path_id int,
 );
 ```
 
