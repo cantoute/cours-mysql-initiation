@@ -553,6 +553,7 @@ LIMIT 10000 OFFSET 10;
 ### Jointure interne ou droite (INNER JOIN)
 
 ```sql
+-- Sans utiliser le terme JOIN, mais c'est équivalent
 SELECT
   p.id AS post_id,
   p.title AS post_title,
@@ -566,6 +567,7 @@ WHERE
   AND p.status = 'Published'
   AND p.id = 1;
 
+-- En utilisant la syntaxe JOIN
 SELECT
   p.id AS post_id,
   p.title AS post_title,
