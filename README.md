@@ -593,12 +593,18 @@ FROM
   post AS p
   JOIN category AS c ON (p.category_id = c.id)
 WHERE
-  p.status = \'Published\',
+  p.status = :post_status,
   AND p.id = :post_id';
 
 $st = $db->prepare($sql);
 
-$st->execute(array(':post_id' => 1, ':post_status' => 3));
+$st->execute(
+  array(
+    ':post_id' => 1,
+    ':post_status' => 'Published'
+  )
+);
+
 $post_1 = $st->fetchAll();
 
 ```
