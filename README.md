@@ -489,6 +489,75 @@ Les types numériques sont :
   -- Empty set (0.000 sec)
   ```
 
+### Date et Heures
+
+- **DATE**
+
+  The date type YYYY-MM-DD.
+
+- **TIME**
+
+  Time format HH:MM:SS.ssssss
+
+- **DATETIME**
+
+  Date and time combination displayed as YYYY-MM-DD HH:MM:SS.
+
+- **TIMESTAMP**
+
+  ```
+  TIMESTAMP [(microsecond precision)]
+  ```
+
+  TIMESTAMP (6)
+
+  YYYY-MM-DD HH:MM:SS.ffffff
+
+### Valeur NULL
+
+Une colonne qui n'est pas renseignée, et donc vide, est dite contenir la valeur `NULL`. Cette valeur n'est pas zéro, c'est une absence de valeur.
+
+Toute expression dont au moins un des termes a la valeur NULL donne comme résultat la valeur `NULL`.
+
+Une exception à cette règle est la fonction `COALESCE`.
+`COALESCE (expr1, expr2,...)` renvoie la première valeur qui n'est pas null parmi les valeurs des expressions
+expr1, expr2,...
+
+Elle permet de remplacer la valeur null par une autre valeur.
+
+### Fonctions / Expressions
+
+```sql
+LIKE
+SELECT 'This is a string' LIKE '%ing';
++--------------------------------+
+| 'This is a string' LIKE '%ing' |
++--------------------------------+
+|                              1 |
++--------------------------------+
+
+TRIM() LTRIM() RTRIM()
+SELECT TRIM(TRAILING 'xyz' FROM 'barxxyz');
++-------------------------------------+
+| TRIM(TRAILING 'xyz' FROM 'barxxyz') |
++-------------------------------------+
+| barx                                |
++-------------------------------------+
+
+LCASE() UCASE()
+LENGTH()
+SUBSTRING()
+REGEXP()
+```
+
+#### Aggrégation
+
+COUNT()
+SUM()
+MAX()
+MIN()
+AVG()
+
 ---
 
 ## Modélisation
