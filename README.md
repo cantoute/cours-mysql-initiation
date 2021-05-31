@@ -57,6 +57,38 @@ Le language standard pour dialoguer avec une base de données est le SQL
 
 ---
 
+## Modélisation
+
+### Relation modèles 1 à n
+
+<img src="images/cms-1-n.png" />
+
+### Relation modèles n à n
+
+<img src="images/cms-n-n.png" />
+
+### Représentation d'un arbre (arborescence)
+
+<img src="images/relation-arbre.png" />
+
+### Le GRAPH
+
+```sql
+CREATE TABLE `point` (
+  id int,
+  `name` VARCHAR(64),
+  x FLOAT,
+  y FLOAT
+)
+
+CREATE TABLE simple_graph (
+  start_point_id int,
+  end_point_id int
+);
+```
+
+---
+
 ## SQL
 
 ### Présentation de SQL
@@ -557,38 +589,6 @@ SUM()
 MAX()
 MIN()
 AVG()
-
----
-
-## Modélisation
-
-### Relation modèles 1 à n
-
-<img src="images/cms-1-n.png" />
-
-### Relation modèles n à n
-
-<img src="images/cms-n-n.png" />
-
-### Représentation d'un arbre (arborescence)
-
-<img src="images/relation-arbre.png" />
-
-### Le GRAPH
-
-```sql
-CREATE TABLE `point` (
-  id int,
-  `name` VARCHAR(64),
-  x FLOAT,
-  y FLOAT
-)
-
-CREATE TABLE simple_graph (
-  start_point_id int,
-  end_point_id int
-);
-```
 
 ---
 
