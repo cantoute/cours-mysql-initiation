@@ -14,7 +14,7 @@ Votre client possède un réseau de chemin de fer et une base de données.
   <figcaption>Figure 1 – Le diagramme représentant la base MySQL de votre application.</figcaption>
 </figure>
 
-Voici les informations du réseau de votre client :
+#### Voici les informations du réseau de votre client :
 
 - Cinq gares : Paris, Lyon, Marseille, Toulouse et Lille.
 - Trois modèles de trains : TGV, TER et Fret.
