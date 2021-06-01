@@ -583,13 +583,152 @@ SUBSTRING()
 REGEXP()
 ```
 
-#### Aggrégation
+#### Fonctions d'aggrégation
 
-COUNT()
-SUM()
-MAX()
-MIN()
-AVG()
+Documentation officielle https://mariadb.com/kb/en/aggregate-functions/
+
+##### COUNT()
+
+```sql
+CREATE TABLE student (name CHAR(10), test CHAR(10), score INT);
+
+INSERT INTO student VALUES
+  ('Chun', 'SQL', 75), ('Chun', 'Tuning', 73),
+  ('Esben', 'SQL', 43), ('Esben', 'Tuning', 31),
+  ('Kaolin', 'SQL', 56), ('Kaolin', 'Tuning', 88),
+  ('Tatiana', 'SQL', 87), ('Tatiana', 'Tuning', 83);
+
+SELECT COUNT(*) FROM student;
++----------+
+| COUNT(*) |
++----------+
+|        8 |
++----------+
+
+-- COUNT(DISTINCT) example:
+
+SELECT COUNT(DISTINCT (name)) FROM student;
++------------------------+
+| COUNT(DISTINCT (name)) |
++------------------------+
+|                      4 |
++------------------------+
+
+-- Dans une fonction de fenêtre (window function)
+SELECT name, test, score,
+  COUNT(score) OVER (PARTITION BY name) AS tests_written
+FROM student_test;
++---------+--------+-------+---------------+
+| name    | test   | score | tests_written |
++---------+--------+-------+---------------+
+| Chun    | SQL    |    75 |             2 |
+| Chun    | Tuning |    73 |             2 |
+| Esben   | SQL    |    43 |             2 |
+| Esben   | Tuning |    31 |             2 |
+| Kaolin  | SQL    |    56 |             2 |
+| Kaolin  | Tuning |    88 |             2 |
+| Tatiana | SQL    |    87 |             1 |
++---------+--------+-------+---------------+
+```
+
+##### SUM() MIN() MAX() AVG()
+
+```sql
+CREATE TABLE sales (sales_value INT);
+INSERT INTO sales VALUES(10),(20),(20),(40);
+
+SELECT SUM(sales_value) FROM sales;
++------------------+
+| SUM(sales_value) |
++------------------+
+|               90 |
++------------------+
+
+SELECT SUM(DISTINCT(sales_value)) FROM sales;
++----------------------------+
+| SUM(DISTINCT(sales_value)) |
++----------------------------+
+|                         70 |
++----------------------------+
+```
+
+De façon générale `SUM` est utilisé en combinaison avec `GROUP BY`
+
+```sql
+CREATE TABLE sales (name CHAR(10), month CHAR(10), units INT);
+
+INSERT INTO sales VALUES
+  ('Chun', 'Jan', 75), ('Chun', 'Feb', 73),
+  ('Esben', 'Jan', 43), ('Esben', 'Feb', 31),
+  ('Kaolin', 'Jan', 56), ('Kaolin', 'Feb', 88),
+  ('Tatiana', 'Jan', 87), ('Tatiana', 'Feb', 83);
+
+SELECT name, SUM(units) FROM sales GROUP BY name;
++---------+------------+
+| name    | SUM(units) |
++---------+------------+
+| Chun    |        148 |
+| Esben   |         74 |
+| Kaolin  |        144 |
+| Tatiana |        170 |
++---------+------------+
+```
+
+La clause `GROUPE BY` est requise quand on la combine avec d'autres données au risque d'obtenir des donnée non cohérentes. Voici un exemple d'erreur fréquent:
+
+```sql
+SELECT name,SUM(units) FROM sales
+;+------+------------+
+| name | SUM(units) |
++------+------------+
+| Chun |        536 |
++------+------------+
+```
+
+Dans une fonction de fenêtre :
+
+```sql
+CREATE OR REPLACE TABLE student_test (name CHAR(10), test CHAR(10), score TINYINT);
+INSERT INTO student_test VALUES
+    ('Chun', 'SQL', 75), ('Chun', 'Tuning', 73),
+    ('Esben', 'SQL', 43), ('Esben', 'Tuning', 31),
+    ('Kaolin', 'SQL', 56), ('Kaolin', 'Tuning', 88),
+    ('Tatiana', 'SQL', 87);
+
+SELECT name, test, score,
+  SUM(score) OVER (PARTITION BY name) AS total_score
+FROM student_test;
++---------+--------+-------+-------------+
+| name    | test   | score | total_score |
++---------+--------+-------+-------------+
+| Chun    | SQL    |    75 |         148 |
+| Chun    | Tuning |    73 |         148 |
+| Esben   | SQL    |    43 |          74 |
+| Esben   | Tuning |    31 |          74 |
+| Kaolin  | SQL    |    56 |         144 |
+| Kaolin  | Tuning |    88 |         144 |
+| Tatiana | SQL    |    87 |          87 |
++---------+--------+-------+-------------+
+```
+
+#### CASE OPERATOR
+
+```
+CASE value WHEN [compare_value] THEN result [WHEN [compare_value] THEN
+result ...] [ELSE result] END
+
+CASE WHEN [condition] THEN result [WHEN [condition] THEN result ...]
+[ELSE result] END
+```
+
+```sql
+SELECT CASE 1 WHEN 1 THEN 'one' WHEN 2 THEN 'two' ELSE 'more' END;
++------------------------------------------------------------+
+| CASE 1 WHEN 1 THEN 'one' WHEN 2 THEN 'two' ELSE 'more' END |
++------------------------------------------------------------+
+| one                                                        |
++------------------------------------------------------------+
+```
 
 ---
 
