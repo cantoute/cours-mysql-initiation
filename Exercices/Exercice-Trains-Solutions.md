@@ -24,11 +24,11 @@ SELECT id
 FROM trajet
 WHERE heure_dep > heure_arr;
 
-+----------+
-| train_id |
-+----------+
-|        9 |
-+----------
++----+
+| id |
++----+
+| 10 |
++----+
 ```
 
 ## Question 3
