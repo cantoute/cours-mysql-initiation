@@ -871,6 +871,27 @@ La jointure externe ajoute des lignes fictives dans une des tables pour faire la
 
 ## Manipulation des données (UPDATE, INSERT, DELETE)
 
+Single-table syntax:
+
+```sql
+UPDATE [LOW_PRIORITY] [IGNORE] table_reference
+  [PARTITION (partition_list)]
+  SET col1={expr1|DEFAULT} [,col2={expr2|DEFAULT}] ...
+  [WHERE where_condition]
+  [ORDER BY ...]
+  [LIMIT row_count]
+```
+
+Multiple-table syntax:
+
+```sql
+UPDATE [LOW_PRIORITY] [IGNORE] table_references
+    SET col1={expr1|DEFAULT} [, col2={expr2|DEFAULT}] ...
+    [WHERE where_condition]
+```
+
+Exemple :
+
 ```sql
 INSERT INTO `category` (
   `id`,
