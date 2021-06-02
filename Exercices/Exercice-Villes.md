@@ -37,3 +37,9 @@ Veuillez trouver les requêtes SQL permettant d’effectuer chacune des demandes
 10. Obtenir la liste des départements qui possèdent plus de 2 millions d’habitants
 
 11. Remplacez le tiret par un espace, pour toutes les villes commençant par “SAINT-” (dans la colonne qui contient les noms en majuscule)
+
+12. Obtenir la liste des villes qui ont entre 10000 et 100000 habitants.
+
+13. Obtenir la liste des villes en remplaçant "Saint-" par "Saint " de la colonne `ville_nom_reel` pour les villes dont le nom commence par "Saint-". Afficher une colonne ville_grande (>100000 habitants), ville_taille_moyenne (entre 10000 et 100000), village (<10000).
+
+14. Ajouter un champ `ville_nom_fix` avec "Saint-" remplacé par "Saint ", une colonne `ville_grande`, `ville_moyenne`, `village` (`SMALLINT`).
