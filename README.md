@@ -989,7 +989,7 @@ DELETE p
    c.id = :category_id
 ```
 
-Usage de la clause RETURNING
+Usage de la clause RETURNING :
 
 ```sql
 -- How to use the RETURNING clause:
