@@ -20,7 +20,7 @@ FROM modele;
 Écrivez une requête qui retourne les `ID` des trajets dont l’heure de départ est plus grande que l’heure d’arrivée (le train arrive le jour suivant).
 
 ```sql
-SELECT train_id
+SELECT id
 FROM trajet
 WHERE heure_dep > heure_arr;
 
