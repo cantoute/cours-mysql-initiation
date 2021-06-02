@@ -956,14 +956,6 @@ UPDATE `category`
     id = 3;
 ```
 
-```sql
-DELETE p
-  FROM post p
-  JOIN category c ON c.id = p.category_id
- WHERE
-   c.id = :category_id
-```
-
 ### DELETE
 
 Single-table syntax:
@@ -987,10 +979,20 @@ DELETE [LOW_PRIORITY] [QUICK] [IGNORE]
     [WHERE where_condition]
 ```
 
-Exemple :
+Exemples :
 
 ```sql
-How to use the RETURNING clause:
+DELETE p
+  FROM post p
+  JOIN category c ON c.id = p.category_id
+ WHERE
+   c.id = :category_id
+```
+
+Usage de la clause RETURNING
+
+```sql
+-- How to use the RETURNING clause:
 
 DELETE FROM t RETURNING f1;
 +------+
