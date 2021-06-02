@@ -117,19 +117,19 @@ ORDER BY nb_arr;
 
 ## Question 6
 
-Écrivez une requête qui retourne tous les trajets et leur durée. Pour cela il vous faudra utiliser les instructions `CASE` et `TIMEDIFF()`.
+Écrivez une requête qui retourne tous les trajets et leur durée. Pour cela il vous faudra utiliser les instructions `CASE`, `TIMEDIFF()` et `ADDTIME()`.
 
 ```sql
 SELECT
-	g_dep.nom AS gare_dep,
+  g_dep.nom AS gare_dep,
   g_arr.nom AS gare_arr,
   trajet.heure_dep,
   trajet.heure_arr,
-	CASE
-  	WHEN heure_arr > heure_dep THEN
-      timediff(heure_arr,heure_dep)
+  CASE
+    WHEN heure_arr > heure_dep THEN
+      TIMEDIFF(heure_arr,heure_dep)
     ELSE
-      timediff(heure_dep, heure_arr)
+      TIMEDIFF(ADDTIME(heure_arr, '24:00:00'), heure_dep)
   END AS duree_trajet,
 	modele.nom AS modele
 FROM
