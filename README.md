@@ -871,6 +871,63 @@ La jointure externe ajoute des lignes fictives dans une des tables pour faire la
 
 ## Manipulation des données (UPDATE, INSERT, DELETE)
 
+### INSERT
+
+Syntaxe :
+
+```sql
+INSERT [LOW_PRIORITY | DELAYED | HIGH_PRIORITY] [IGNORE]
+ [INTO] tbl_name [PARTITION (partition_list)] [(col,...)]
+ {VALUES | VALUE} ({expr | DEFAULT},...),(...),...
+ [ ON DUPLICATE KEY UPDATE
+   col=expr
+     [, col=expr] ... ] [RETURNING select_expr
+      [, select_expr ...]]
+```
+
+Ou :
+
+```sql
+INSERT [LOW_PRIORITY | DELAYED | HIGH_PRIORITY] [IGNORE]
+    [INTO] tbl_name [PARTITION (partition_list)]
+    SET col={expr | DEFAULT}, ...
+    [ ON DUPLICATE KEY UPDATE
+      col=expr
+        [, col=expr] ... ] [RETURNING select_expr
+      [, select_expr ...]]
+```
+
+Ou :
+
+```sql
+INSERT [LOW_PRIORITY | HIGH_PRIORITY] [IGNORE]
+    [INTO] tbl_name [PARTITION (partition_list)] [(col,...)]
+    SELECT ...
+    [ ON DUPLICATE KEY UPDATE
+      col=expr
+        [, col=expr] ... ] [RETURNING select_expr
+      [, select_expr ...]]
+```
+
+Exemple :
+
+```sql
+INSERT INTO `category` (
+  `id`,
+  `parent_id`,
+  `slug`,
+  `title`,
+  `content`,
+  `created_at`,
+  `updated_at`
+  ) VALUES
+  (1, NULL, 'non-classe', 'Non Classé', '', '2021-05-30 16:46:52', NULL),
+  (2, 2, 'cours', 'Cours', '', '2021-05-30 16:47:38', NULL),
+  (3, 2, 'mysql', 'MySQL', '', '2021-05-30 16:48:18', NULL);
+```
+
+### UPDATE
+
 Single-table syntax:
 
 ```sql
@@ -893,21 +950,6 @@ UPDATE [LOW_PRIORITY] [IGNORE] table_references
 Exemple :
 
 ```sql
-INSERT INTO `category` (
-  `id`,
-  `parent_id`,
-  `slug`,
-  `title`,
-  `content`,
-  `created_at`,
-  `updated_at`
-  ) VALUES
-  (1, NULL, 'non-classe', 'Non Classé', '', '2021-05-30 16:46:52', NULL),
-  (2, 2, 'cours', 'Cours', '', '2021-05-30 16:47:38', NULL),
-  (3, 2, 'mysql', 'MySQL', '', '2021-05-30 16:48:18', NULL);
-```
-
-```sql
 UPDATE `category`
   SET `title` = 'MySQL / MariaDB'
   WHERE
@@ -920,6 +962,44 @@ DELETE p
   JOIN category c ON c.id = p.category_id
  WHERE
    c.id = :category_id
+```
+
+### DELETE
+
+Single-table syntax:
+
+```sql
+DELETE [LOW_PRIORITY] [QUICK] [IGNORE]
+  FROM tbl_name [PARTITION (partition_list)]
+  [WHERE where_condition]
+  [ORDER BY ...]
+  [LIMIT row_count]
+  [RETURNING select_expr
+    [, select_expr ...]]
+```
+
+Syntaxe multiple-table :
+
+```sql
+DELETE [LOW_PRIORITY] [QUICK] [IGNORE]
+    FROM tbl_name[.*] [, tbl_name[.*]] ...
+    USING table_references
+    [WHERE where_condition]
+```
+
+Exemple :
+
+```sql
+How to use the RETURNING clause:
+
+DELETE FROM t RETURNING f1;
++------+
+| f1   |
++------+
+|    5 |
+|   50 |
+|  500 |
++------+
 ```
 
 ## Définitions des données
