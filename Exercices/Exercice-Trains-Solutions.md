@@ -37,12 +37,11 @@ WHERE heure_dep > heure_arr;
 
 ```sql
 SELECT
-    t.heure_arr,
-    g.nom AS gare_arr
+  t.heure_arr,
+  g.nom AS gare_arr
 FROM
-    trajet AS t
-INNER JOIN gare AS g
-ON
+  trajet AS t
+  INNER JOIN gare AS g ON
     (g.id = t.arr_gare_id);
 
 +-----------+-----------+
@@ -69,12 +68,12 @@ ON
 
 ```sql
 SELECT
-    COUNT(g_dep.id) AS nb_dep,
-    g_dep.nom AS gare_dep
+  COUNT(g_dep.id) AS nb_dep,
+  g_dep.nom AS gare_dep
 FROM
-    trajet AS t
-    INNER JOIN gare AS g_dep ON
-      (g_dep.id = t.dep_gare_id)
+  trajet AS t
+  INNER JOIN gare AS g_dep ON
+    (g_dep.id = t.dep_gare_id)
 GROUP BY g_dep.id
 ORDER BY nb_dep DESC;
 
@@ -95,12 +94,12 @@ ORDER BY nb_dep DESC;
 
 ```sql
 SELECT
-    COUNT(g_arr.id) AS nb_arr,
-    g_arr.nom AS gare_arr
+  COUNT(g_arr.id) AS nb_arr,
+  g_arr.nom AS gare_arr
 FROM
-    trajet AS t
-    INNER JOIN gare AS g_arr
-      ON (g_arr.id = t.arr_gare_id)
+  trajet AS t
+  INNER JOIN gare AS g_arr
+    ON (g_arr.id = t.arr_gare_id)
 GROUP BY g_arr.id
 ORDER BY nb_arr;
 
@@ -131,9 +130,9 @@ SELECT
     ELSE
       TIMEDIFF(ADDTIME(heure_arr, '24:00:00'), heure_dep)
   END AS duree_trajet,
-	modele.nom AS modele
+  modele.nom AS modele
 FROM
-	trajet
+  trajet
   JOIN train ON (trajet.train_id = train.id)
   JOIN modele ON (modele.id = train.modele_id)
   JOIN gare AS g_arr ON (g_arr.id = trajet.arr_gare_id)
