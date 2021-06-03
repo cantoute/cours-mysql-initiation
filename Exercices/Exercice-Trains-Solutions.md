@@ -126,7 +126,7 @@ SELECT
   trajet.heure_arr,
   CASE
     WHEN heure_arr > heure_dep THEN
-      TIMEDIFF(heure_arr,heure_dep)
+      TIMEDIFF(heure_arr, heure_dep)
     ELSE
       TIMEDIFF(ADDTIME(heure_arr, '24:00:00'), heure_dep)
   END AS duree_trajet,
