@@ -138,10 +138,10 @@ FROM
   JOIN gare AS g_arr ON (g_arr.id = trajet.arr_gare_id)
   JOIN gare AS g_dep ON (g_dep.id = trajet.dep_gare_id)
 ORDER BY trajet.heure_dep;
+```
 
-+-----------+-----------+-----------+-----------+--------------+--------+
 | gare_dep  | gare_arr  | heure_dep | heure_arr | duree_trajet | modele |
-+-----------+-----------+-----------+-----------+--------------+--------+
+| --------- | --------- | --------- | --------- | ------------ | ------ |
 | Lille     | Lyon      | 01:00:00  | 17:00:00  | 16:00:00     | Fret   |
 | Paris     | Lille     | 02:00:00  | 08:00:00  | 06:00:00     | TER    |
 | Paris     | Marseille | 03:00:00  | 14:00:00  | 11:00:00     | TER    |
@@ -154,5 +154,3 @@ ORDER BY trajet.heure_dep;
 | Marseille | Toulouse  | 13:00:00  | 18:00:00  | 05:00:00     | TGV    |
 | Lyon      | Marseille | 15:00:00  | 23:00:00  | 08:00:00     | TER    |
 | Marseille | Lille     | 16:00:00  | 21:00:00  | 05:00:00     | TGV    |
-+-----------+-----------+-----------+-----------+--------------+--------+
-```
