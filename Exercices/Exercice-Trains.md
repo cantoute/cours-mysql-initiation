@@ -60,7 +60,7 @@ Votre client possède un réseau de chemin de fer et une base de données.
 
 ## Question 6
 
-Écrivez une requête qui retourne tous les trajets et leur durée. Pour cela il vous faudra utiliser les instructions `CASE`, `TIMEDIFF()` et `ADDTIME()`..
+Écrivez une requête qui retourne tous les trajets et leur durée. Pour cela il vous faudra utiliser les instructions `CASE`, `TIMEDIFF()` et `ADDTIME()`.
 
 <!--
 ## Question 6 (Bonus)
