@@ -761,7 +761,31 @@ LIMIT 10000 OFFSET 10;
 -- LIMIT 10, 10000;
 ```
 
-### Jointure interne ou droite (INNER JOIN)
+### Jointures internes _ou droites_ (`INNER JOIN`)
+
+<picture>
+  <img src="images/sql-inner-join.png" />
+  <figcaption>
+    Source :
+    <a href="https://sql.sh/cours/jointures">sql.sh/cours/jointures</a>
+  </figcaption>
+</picture>
+
+```sql
+SELECT *
+FROM A
+  INNER JOIN B ON A.key = B.key
+```
+
+_Notons que c'est strictement équivalent à :_
+
+```sql
+SELECT *
+FROM A, B
+WHERE A.key = B.key
+```
+
+#### Exemple :
 
 ```sql
 -- Sans utiliser le terme JOIN, mais c'est équivalent
@@ -974,9 +998,9 @@ Syntaxe multiple-table :
 
 ```sql
 DELETE [LOW_PRIORITY] [QUICK] [IGNORE]
-    FROM tbl_name[.*] [, tbl_name[.*]] ...
-    USING table_references
-    [WHERE where_condition]
+  FROM tbl_name[.*] [, tbl_name[.*]] ...
+  USING table_references
+  [WHERE where_condition]
 ```
 
 Exemples :
@@ -984,9 +1008,9 @@ Exemples :
 ```sql
 DELETE p
   FROM post p
-  JOIN category c ON c.id = p.category_id
- WHERE
-   c.id = :category_id
+    JOIN category c ON c.id = p.category_id
+  WHERE
+    c.id = :category_id
 ```
 
 Usage de la clause RETURNING :
@@ -1070,3 +1094,10 @@ Pour vous simplifier la vie vous utiliserez phpMyAdmin :)
 
 - [Tutoriel MySQL complet pour les débutants](https://www.ionos.fr/digitalguide/serveur/know-how/apprendre-mysql-en-toute-simplicite/)
 - [Université de Nice Sophia-Antipolis - Langage SQL - Richard Grin](https://docplayer.fr/2278856-Universite-de-nice-sophia-antipolis-langage-sql-version-5-7-du-polycopie-richard-grin.html)
+
+<style>
+picture img {
+  display: block;
+  margin: 1em auto;
+}
+</style>
