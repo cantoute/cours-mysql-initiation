@@ -930,6 +930,14 @@ FROM student_test;
 +---------+--------+-------+-------------+
 ```
 
+### `GROUP_CONCAT()`
+
+```sql
+SELECT id, GROUP_CONCAT( nom_colonne SEPARATOR ', ' )
+FROM table
+GROUP BY id
+```
+
 ---
 
 ## Interrogation de la base (SELECT)
