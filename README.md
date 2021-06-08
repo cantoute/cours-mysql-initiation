@@ -588,6 +588,55 @@ _A savoir :_ l’opérateur IS retourne en réalité un booléen, c’est à dir
 
 ## Fonctions / Expressions
 
+### `+` `-` `*` `/` `%`
+
+`%` aussi dit modulo retourne le reste d'une division. Pratique pour tester pai/impaire ou pour connaitre la ligne dans un tableau paginé.
+
+```sql
+SELECT 8 % 3;
+
++-------+
+| 8 % 3 |
++-------+
+|     2 |
++-------+
+```
+
+### = != < <= > >=
+
+### `BETWEEN()`
+
+```sql
+SELECT *
+FROM `user`
+WHERE created_at BETWEEN '2021-01-01' AND '2021-01-31';
+
+-- equivalent
+SELECT *
+FROM `user`
+WHERE ('2021-01-01' <= created_at AND created_at <= '2021-01-31')
+```
+
+### `IN()`
+
+```sql
+SELECT 2 IN (0,3,5,7);
++----------------+
+| 2 IN (0,3,5,7) |
++----------------+
+|              0 |
++----------------+
+
+SELECT (3,4) IN ((1,2), (3,4));
++-------------------------+
+| (3,4) IN ((1,2), (3,4)) |
++-------------------------+
+|                       1 |
++-------------------------+
+
+SELECT val1 FROM tbl1 WHERE val1 IN (1,2,'a');
+```
+
 ### `LIKE`
 
 L’opérateur `LIKE` est utilisé dans la clause WHERE des requêtes SQL. Ce mot-clé permet d’effectuer une recherche sur un modèle particulier. Il est par exemple possible de rechercher les enregistrements dont la valeur d’une colonne commence par telle ou telle lettre. Les modèles de recherches sont multiple.
