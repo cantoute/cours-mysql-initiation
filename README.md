@@ -546,48 +546,267 @@ Les types numériques sont :
 
   YYYY-MM-DD HH:MM:SS.ffffff
 
-### Valeur NULL
+### Valeur `NULL`
 
 Une colonne qui n'est pas renseignée, et donc vide, est dite contenir la valeur `NULL`. Cette valeur n'est pas zéro, c'est une absence de valeur.
 
 Toute expression dont au moins un des termes a la valeur NULL donne comme résultat la valeur `NULL`.
 
-Une exception à cette règle est la fonction `COALESCE`.
-`COALESCE (expr1, expr2,...)` renvoie la première valeur qui n'est pas null parmi les valeurs des expressions
-expr1, expr2,...
+Une exception à cette règle est la fonction `COALESCE`. `COALESCE` (expr1, expr2,...) renvoie la première valeur qui n'est pas null parmi les valeurs des expressions expr1, expr2,...
 
-Elle permet de remplacer la valeur null par une autre valeur.
+`COALESCE` permet de remplacer la valeur null par une autre valeur.
 
-### Fonctions / Expressions
+**Remarque importante :** les valeurs `NULL` ne sont pas inclues dans les indexes (d'autant plus intéressant dans le cas des indexes uniques).
+
+### SQL `IS NULL` / `IS NOT NULL`
+
+Dans le langage SQL, l’opérateur IS permet de filtrer les résultats qui contiennent la valeur NULL. Cet opérateur est indispensable car la valeur NULL est une valeur inconnue et ne peut par conséquent pas être filtrée par les opérateurs de comparaison (cf. égal, inférieur, supérieur ou différent).
+
+Syntaxe
+Pour filtrer les résultats où les champs d’une colonne sont à NULL il convient d’utiliser la syntaxe suivante:
 
 ```sql
-LIKE
+SELECT *
+FROM `table`
+WHERE nom_colonne IS NULL
+```
+
+A l’inverse, pour filtrer les résultats et obtenir uniquement les enregistrements qui ne sont pas null, il convient d’utiliser la syntaxe suivante:
+
+```sql
+SELECT *
+FROM `table`
+WHERE nom_colonne IS NOT NULL;
+
+-- strictement équivalent à :
+SELECT *
+FROM `table`
+WHERE NOT nom_colonne IS NULL;
+```
+
+_A savoir :_ l’opérateur IS retourne en réalité un booléen, c’est à dire une valeur `TRUE` si la condition est vrai ou `FALSE` si la condition n’est pas respectée. Cet opérateur est souvent utilisé avec la condition WHERE mais peut aussi trouvé son utilité lorsqu’une sous-requête est utilisée.
+
+## Fonctions / Expressions
+
+### `LIKE`
+
+L’opérateur `LIKE` est utilisé dans la clause WHERE des requêtes SQL. Ce mot-clé permet d’effectuer une recherche sur un modèle particulier. Il est par exemple possible de rechercher les enregistrements dont la valeur d’une colonne commence par telle ou telle lettre. Les modèles de recherches sont multiple.
+
+```sql
+
 SELECT 'This is a string' LIKE '%ing';
 +--------------------------------+
 | 'This is a string' LIKE '%ing' |
 +--------------------------------+
 |                              1 |
 +--------------------------------+
+```
 
-TRIM() LTRIM() RTRIM()
+#### Syntaxe
+
+La syntaxe à utiliser pour utiliser l’opérateur LIKE est la suivante :
+
+```sql
+SELECT *
+FROM table
+WHERE colonne LIKE modele
+```
+
+Dans cet exemple le “modèle” n’a pas été défini, mais il ressemble très généralement à l’un des exemples suivants:
+
+- `LIKE` '%a' : le caractère “%” est un caractère joker qui remplace tous les autres caractères. Ainsi, ce modèle permet de rechercher toutes les chaines de caractère qui se termine par un “a”.
+- `LIKE` 'a%' : ce modèle permet de rechercher toutes les lignes de “colonne” qui commence par un “a”.
+- `LIKE` '%a%' : ce modèle est utilisé pour rechercher tous les enregistrement qui utilisent le caractère “a”.
+- `LIKE` 'pa%on' : ce modèle permet de rechercher les chaines qui commence par “pa” et qui se terminent par “on”, comme “pantalon” ou “pardon”.
+- `LIKE` 'a_c' : le caractère “\_“ (underscore) peut être remplacé par n’importe quel caractère, mais un et un seul caractère uniquement (alors que le symbole pourcentage “%” peut être remplacé par un nombre indéterminé de caractères. Ainsi, ce modèle permet de retourner les lignes “aac”, “abc” ou même “azc”.
+
+### SQL `CASE`
+
+Dans le langage SQL, la commande `CASE … WHEN …` permet d’utiliser des conditions de type “si / sinon” (cf. if / else) similaire à un langage de programmation pour retourner un résultat disponible entre plusieurs possibilités. Le `CASE` peut être utilisé dans n’importe quelle instruction ou clause, telle que `SELECT`, `UPDATE`, `DELETE`, `WHERE`, `ORDER BY` ou `HAVING`.
+
+#### Syntaxe
+
+L’utilisation du `CASE` est possible de 2 manières différentes :
+
+Comparer une colonne à un set de résultat possible
+Élaborer une série de conditions booléennes pour déterminer un résultat
+Comparer une colonne à un set de résultat
+Voici la syntaxe nécessaire pour comparer une colonne à un set d’enregistrement :
+
+```sql
+SELECT
+  CASE t.a
+    WHEN 1 THEN 'un'
+    WHEN 2 THEN 'deux'
+    WHEN 3 THEN 'trois'
+    ELSE 'autre'
+  END AS undeuxtroisautre,
+  t.a
+FROM
+  (
+    SELECT FLOOR(RAND() * 10) AS a
+  ) AS t;
+
++------------------+---+
+| undeuxtroisautre | a |
++------------------+---+
+| autre            | 6 |
++------------------+---+
+```
+
+Dans cet exemple les valeurs contenus dans la colonne “a” sont comparé à 1, 2 ou 3. Si la condition est vrai, alors la valeur située après le THEN sera retournée.
+
+A noter : la condition ELSE est facultative et sert de ramasse-miette. Si les conditions précédentes ne sont pas respectées alors ce sera la valeur du ELSE qui sera retournée par défaut.
+
+Élaborer une série de conditions booléennes pour déterminer un résultat.
+
+Il est possible d’établir des conditions plus complexes pour récupérer un résultat ou un autre. Cela s’effectue en utilisant la syntaxe suivante:
+
+```sql
+SELECT
+  CASE
+    WHEN a=b THEN 'A égal à B'
+    WHEN a>b THEN 'A supérieur à B'
+    ELSE 'A inférieur à B'
+  END
+```
+
+Dans cet exemple les colonnes “a”, “b” et “c” peuvent contenir des valeurs numériques. Lorsqu’elles sont respectées, les conditions booléennes permettent de rentrer dans l’une ou l’autre des conditions.
+
+Il est possible de reproduire le premier exemple présenté sur cette page en utilisant la syntaxe suivante:
+
+```sql
+CASE
+  WHEN a=1 THEN 'un'
+  WHEN a=2 THEN 'deux'
+  WHEN a=3 THEN 'trois'
+  ELSE 'autre'
+END
+```
+
+#### `UPDATE` avec `CASE`
+
+Comme cela a été expliqué au début, il est aussi possible d’utiliser le CASE à la suite de la commande SET d’un UPDATE pour mettre à jour une colonne avec une données spécifique selon une règle. Imaginons par exemple que l’ont souhaite offrir un produit pour tous les achats qui ont une surcharge inférieur à 1 et que l’ont souhaite retirer un produit pour tous les achats avec une surcharge supérieur à 1. Il est possible d’utiliser la requête SQL suivante :
+
+```sql
+UPDATE `achat`
+SET `quantite` = (
+  CASE
+    WHEN `surcharge` < 1 THEN `quantite` + 1
+    WHEN `surcharge` > 1 THEN `quantite` - 1
+    ELSE quantite
+  END
+)
+```
+
+### `TRIM()` `LTRIM()` `RTRIM()`
+
+```sql
 SELECT TRIM(TRAILING 'xyz' FROM 'barxxyz');
 +-------------------------------------+
 | TRIM(TRAILING 'xyz' FROM 'barxxyz') |
 +-------------------------------------+
 | barx                                |
 +-------------------------------------+
-
-LCASE() UCASE()
-LENGTH()
-SUBSTRING()
-REGEXP()
 ```
 
-#### Fonctions d'aggrégation
+### `LCASE()` `UCASE()`
 
-Documentation officielle https://mariadb.com/kb/en/aggregate-functions/
+```sql
+SELECT UCASE('Voiture'), LCASE('Camion');
++------------------+-----------------+
+| UCASE('Voiture') | LCASE('Camion') |
++------------------+-----------------+
+| VOITURE          | camion          |
++------------------+-----------------+
 
-##### COUNT()
+-- Dans le cas où vous utilisez une collation
+-- qui gère les caractères accentués (utf8, latin1, etc...)
+SELECT UCASE('Véhicule');
++--------------------+
+| UCASE('Véhicule')  |
++--------------------+
+| VÉHICULE           |
++--------------------+
+```
+
+### `SUBSTRING()`
+
+```sql
+SELECT SUBSTRING('Quadratically',5);
+        -> 'ratically'
+SELECT SUBSTRING('foobarbar' FROM 4);
+        -> 'barbar'
+SELECT SUBSTRING('Quadratically',5,6);
+        -> 'ratica'
+SELECT SUBSTRING('Sakila', -3);
+        -> 'ila'
+SELECT SUBSTRING('Sakila', -5, 3);
+        -> 'aki'
+SELECT SUBSTRING('Sakila' FROM -4 FOR 2);
+        -> 'ki'
+```
+
+### `LENGTH()` `CHAR_LENGTH()`
+
+**SQL `LENGTH()` et utf8 ¡¡¡ Attention !!!**
+
+```sql
+SELECT LENGTH('mange');
+
++-----------------+
+| LENGTH('mange') |
++-----------------+
+|               5 |
++-----------------+
+
+SELECT LENGTH('mangé');
++------------------+
+| LENGTH('mangé')  |
++------------------+
+|                6 |
++------------------+
+
+SELECT CHAR_LENGTH('mangé');
++-----------------------+
+| CHAR_LENGTH('mangé')  |
++-----------------------+
+|                     5 |
++-----------------------+
+```
+
+### Collations et encodages des caractères
+
+```sql
+SET NAMES 'utf8' COLLATE 'utf8_unicode_ci';
+
+SELECT 'é' = 'e';
++------------+
+| 'é' = 'e'  |
++------------+
+|          1 |
++------------+
+
+SELECT "ß" = "ss" COLLATE utf8_unicode_ci;
++-------------------------------------+
+| "ß" = "ss" COLLATE utf8_unicode_ci  |
++-------------------------------------+
+|                                   1 |
++-------------------------------------+
+```
+
+### `CONCAT_WS()`
+
+```sql
+SELECT CONCAT_WS(", ", Address, PostalCode, City) AS Address
+FROM Customers;
+```
+
+## Fonctions d'aggrégation
+
+Documentation officielle [mariadb.com/kb/en/aggregate-functions/](https://mariadb.com/kb/en/aggregate-functions/)
+
+### `COUNT()`
 
 ```sql
 CREATE TABLE student (name CHAR(10), test CHAR(10), score INT);
@@ -615,8 +834,8 @@ SELECT COUNT(DISTINCT (name)) FROM student;
 +------------------------+
 
 -- Dans une fonction de fenêtre (window function)
-SELECT name, test, score,
-  COUNT(score) OVER (PARTITION BY name) AS tests_written
+SELECT `name`, test, score,
+  COUNT(score) OVER (PARTITION BY `name`) AS tests_written
 FROM student_test;
 +---------+--------+-------+---------------+
 | name    | test   | score | tests_written |
@@ -631,7 +850,7 @@ FROM student_test;
 +---------+--------+-------+---------------+
 ```
 
-##### SUM() MIN() MAX() AVG()
+### `SUM()` `MIN()` `MAX()` `AVG()`
 
 ```sql
 CREATE TABLE sales (sales_value INT);
@@ -677,7 +896,7 @@ SELECT name, SUM(units) FROM sales GROUP BY name;
 La clause `GROUPE BY` est requise quand on la combine avec d'autres données au risque d'obtenir des donnée non cohérentes. Voici un exemple d'erreur fréquent:
 
 ```sql
-SELECT name,SUM(units) FROM sales
+SELECT `name`, SUM(units) FROM sales
 ;+------+------------+
 | name | SUM(units) |
 +------+------------+
@@ -709,25 +928,6 @@ FROM student_test;
 | Kaolin  | Tuning |    88 |         144 |
 | Tatiana | SQL    |    87 |          87 |
 +---------+--------+-------+-------------+
-```
-
-#### CASE OPERATOR
-
-```
-CASE value WHEN [compare_value] THEN result [WHEN [compare_value] THEN
-result ...] [ELSE result] END
-
-CASE WHEN [condition] THEN result [WHEN [condition] THEN result ...]
-[ELSE result] END
-```
-
-```sql
-SELECT CASE 1 WHEN 1 THEN 'one' WHEN 2 THEN 'two' ELSE 'more' END;
-+------------------------------------------------------------+
-| CASE 1 WHEN 1 THEN 'one' WHEN 2 THEN 'two' ELSE 'more' END |
-+------------------------------------------------------------+
-| one                                                        |
-+------------------------------------------------------------+
 ```
 
 ---
