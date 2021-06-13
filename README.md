@@ -22,11 +22,19 @@
   - [Valeur `NULL`](#valeur-null)
   - [SQL `IS NULL` / `IS NOT NULL`](#sql-is-null--is-not-null)
 - [Fonctions / Expressions](#fonctions--expressions)
+  - [`+` `-` `*` `/` `%`](#-----%25)
+  - [`=`, `!=`, `<>`, ``, `>=`](#----)
+  - [``](#)
+  - [`BETWEEN()`](#between)
+  - [`IN()`](#in)
   - [`LIKE`](#like)
     - [Syntaxe](#syntaxe)
   - [SQL `CASE`](#sql-case)
     - [Syntaxe](#syntaxe-1)
     - [`UPDATE` avec `CASE`](#update-avec-case)
+  - [`NOT`, `!`](#not-)
+  - [`AND`, `&&`, `OR`, `||`](#and--or-)
+  - [`LEAST()`, `GREATEST()`](#least-greatest)
   - [`TRIM()` `LTRIM()` `RTRIM()`](#trim-ltrim-rtrim)
   - [`LCASE()` `UCASE()`](#lcase-ucase)
   - [`SUBSTRING()`](#substring)
@@ -1499,10 +1507,3 @@ Pour vous simplifier la vie vous utiliserez phpMyAdmin :)
 
 - [Tutoriel MySQL complet pour les débutants](https://www.ionos.fr/digitalguide/serveur/know-how/apprendre-mysql-en-toute-simplicite/)
 - [Université de Nice Sophia-Antipolis - Langage SQL - Richard Grin](https://docplayer.fr/2278856-Universite-de-nice-sophia-antipolis-langage-sql-version-5-7-du-polycopie-richard-grin.html)
-
-<style>
-picture img {
-  display: block;
-  margin: 1em auto;
-}
-</style>
