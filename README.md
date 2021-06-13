@@ -22,11 +22,19 @@
   - [Valeur `NULL`](#valeur-null)
   - [SQL `IS NULL` / `IS NOT NULL`](#sql-is-null--is-not-null)
 - [Fonctions / Expressions](#fonctions--expressions)
+  - [`+` `-` `*` `/` `%`](#-----%25)
+  - [`=`, `!=`, `<>`, ``, `>=`](#----)
+  - [``](#)
+  - [`BETWEEN()`](#between)
+  - [`IN()`](#in)
   - [`LIKE`](#like)
     - [Syntaxe](#syntaxe)
   - [SQL `CASE`](#sql-case)
     - [Syntaxe](#syntaxe-1)
     - [`UPDATE` avec `CASE`](#update-avec-case)
+  - [`NOT`, `!`](#not-)
+  - [`AND`, `&&`, `OR`, `||`](#and--or-)
+  - [`LEAST()`, `GREATEST()`](#least-greatest)
   - [`TRIM()` `LTRIM()` `RTRIM()`](#trim-ltrim-rtrim)
   - [`LCASE()` `UCASE()`](#lcase-ucase)
   - [`SUBSTRING()`](#substring)
@@ -643,6 +651,87 @@ _A savoir :_ l’opérateur IS retourne en réalité un booléen, c’est à dir
 
 ## Fonctions / Expressions
 
+### `+` `-` `*` `/` `%`
+
+`%` aussi dit modulo retourne le reste d'une division. Pratique pour tester pai/impaire ou pour connaitre la ligne dans un tableau paginé.
+
+```sql
+SELECT 8 % 3;
+
++-------+
+| 8 % 3 |
++-------+
+|     2 |
++-------+
+```
+
+### `=`, `!=`, `<>`, `<`, `<=`, `>`, `>=`
+
+```sql
+-- Not equal
+SELECT 'zapp' <> 'zappp', 'zapp' != 'zappp';
++-------------------+-------------------+
+| 'zapp' <> 'zappp' | 'zapp' != 'zappp' |
++-------------------+-------------------+
+|                 1 |                 1 |
++-------------------+-------------------+
+```
+
+### `<=>`
+
+NULL-safe égal. Cet opérateur effectue une comparaison d'égalité comme l'opérateur =, mais renvoie 1 plutôt que NULL si les deux opérandes sont NULL, et 0 plutôt que NULL si un opérande est NULL.
+
+L'opérateur <=> est équivalent à l'opérateur SQL standard `IS NOT DISTINCT FROM`.
+
+```sql
+SELECT 1 <=> 1, NULL <=> NULL, 1 <=> NULL;
++---------+---------------+------------+
+| 1 <=> 1 | NULL <=> NULL | 1 <=> NULL |
++---------+---------------+------------+
+|       1 |             1 |          0 |
++---------+---------------+------------+
+
+SELECT 1 = 1, NULL = NULL, 1 = NULL;
++-------+-------------+----------+
+| 1 = 1 | NULL = NULL | 1 = NULL |
++-------+-------------+----------+
+|     1 |        NULL |     NULL |
++-------+-------------+----------+
+```
+
+### `BETWEEN()`
+
+```sql
+SELECT *
+FROM `user`
+WHERE created_at BETWEEN '2021-01-01' AND '2021-01-31';
+
+-- equivalent
+SELECT *
+FROM `user`
+WHERE ('2021-01-01' <= created_at AND created_at <= '2021-01-31')
+```
+
+### `IN()`
+
+```sql
+SELECT 2 IN (0,3,5,7);
++----------------+
+| 2 IN (0,3,5,7) |
++----------------+
+|              0 |
++----------------+
+
+SELECT (3,4) IN ((1,2), (3,4));
++-------------------------+
+| (3,4) IN ((1,2), (3,4)) |
++-------------------------+
+|                       1 |
++-------------------------+
+
+SELECT val1 FROM tbl1 WHERE val1 IN (1,2,'a');
+```
+
 ### `LIKE`
 
 L’opérateur `LIKE` est utilisé dans la clause WHERE des requêtes SQL. Ce mot-clé permet d’effectuer une recherche sur un modèle particulier. Il est par exemple possible de rechercher les enregistrements dont la valeur d’une colonne commence par telle ou telle lettre. Les modèles de recherches sont multiple.
@@ -752,6 +841,67 @@ SET `quantite` = (
     ELSE quantite
   END
 )
+```
+
+### `NOT`, `!`
+
+```sql
+SELECT NOT TRUE;
++----------+
+| NOT TRUE |
++----------+
+|        0 |
++----------+
+
+SELECT ! FALSE;
++---------+
+| ! FALSE |
++---------+
+|       1 |
++---------+
+```
+
+### `AND`, `&&`, `OR`, `||`
+
+```sql
+SELECT true && false, true AND false;
++---------------+----------------+
+| true && false | true AND false |
++---------------+----------------+
+|             0 |              0 |
++---------------+----------------+
+
+SELECT true || false, true OR false;
++---------------+---------------+
+| true || false | true OR false |
++---------------+---------------+
+|             1 |             1 |
++---------------+---------------+
+```
+
+### `LEAST()`, `GREATEST()`
+
+```sql
+SELECT LEAST(34.0,3.0,5.0,767.0);
++---------------------------+
+| LEAST(34.0,3.0,5.0,767.0) |
++---------------------------+
+|                       3.0 |
++---------------------------+
+
+SELECT LEAST('B','A','C');
++--------------------+
+| LEAST('B','A','C') |
++--------------------+
+| A                  |
++--------------------+
+
+SELECT GREATEST(34.0,3.0,5.0,767.0);
++------------------------------+
+| GREATEST(34.0,3.0,5.0,767.0) |
++------------------------------+
+|                        767.0 |
++------------------------------+
 ```
 
 ### `TRIM()` `LTRIM()` `RTRIM()`
@@ -1357,10 +1507,3 @@ Pour vous simplifier la vie vous utiliserez phpMyAdmin :)
 
 - [Tutoriel MySQL complet pour les débutants](https://www.ionos.fr/digitalguide/serveur/know-how/apprendre-mysql-en-toute-simplicite/)
 - [Université de Nice Sophia-Antipolis - Langage SQL - Richard Grin](https://docplayer.fr/2278856-Universite-de-nice-sophia-antipolis-langage-sql-version-5-7-du-polycopie-richard-grin.html)
-
-<style>
-picture img {
-  display: block;
-  margin: 1em auto;
-}
-</style>
