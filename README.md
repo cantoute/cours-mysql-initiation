@@ -22,9 +22,9 @@
   - [Valeur `NULL`](#valeur-null)
   - [SQL `IS NULL` / `IS NOT NULL`](#sql-is-null--is-not-null)
 - [Fonctions / Expressions](#fonctions--expressions)
-  - [`+` `-` `*` `/` `%`](#-----%25)
-  - [`=`, `!=`, `<>`, ``, `>=`](#----)
-  - [``](#)
+  - [+, -, \*, /, %](#-----%25)
+  - [=, !=, &lt;&gt;, &lt;, &gt;=, &gt;, &gt;=](#--ltgt-lt-gt-gt-gt)
+  - [&lt;=&gt;](#ltgt)
   - [`BETWEEN()`](#between)
   - [`IN()`](#in)
   - [`LIKE`](#like)
@@ -651,7 +651,7 @@ _A savoir :_ l’opérateur IS retourne en réalité un booléen, c’est à dir
 
 ## Fonctions / Expressions
 
-### `+` `-` `*` `/` `%`
+### +, -, \*, /, %
 
 `%` aussi dit modulo retourne le reste d'une division. Pratique pour tester pai/impaire ou pour connaitre la ligne dans un tableau paginé.
 
@@ -665,7 +665,7 @@ SELECT 8 % 3;
 +-------+
 ```
 
-### `=`, `!=`, `<>`, `<`, `<=`, `>`, `>=`
+### =, !=, &lt;&gt;, &lt;, &gt;=, &gt;, &gt;=
 
 ```sql
 -- Not equal
@@ -677,7 +677,7 @@ SELECT 'zapp' <> 'zappp', 'zapp' != 'zappp';
 +-------------------+-------------------+
 ```
 
-### `<=>`
+### &lt;=&gt;
 
 NULL-safe égal. Cet opérateur effectue une comparaison d'égalité comme l'opérateur =, mais renvoie 1 plutôt que NULL si les deux opérandes sont NULL, et 0 plutôt que NULL si un opérande est NULL.
 
