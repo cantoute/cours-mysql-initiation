@@ -22,14 +22,14 @@ WHERE departement_code LIKE '97%';
 SELECT *
 FROM
   villes_france_free AS v
-  JOIN departement AS d ON (departement_code = ville_departement)
+  JOIN departement AS d ON (d.departement_code = v.ville_departement)
 ORDER BY v.ville_population_2012 DESC
 LIMIT 10;
 
 -- 5
 SELECT departement_nom, ville_departement, COUNT(*) AS nb_items
   FROM villes_france_free AS v
-  JOIN departement AS d ON d.departement_code = v.ville_departement
+  JOIN departement AS d ON (d.departement_code = v.ville_departement)
 GROUP BY v.ville_departement
 ORDER BY nb_items DESC;
 
