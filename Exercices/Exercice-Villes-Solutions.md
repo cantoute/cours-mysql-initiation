@@ -65,6 +65,19 @@ WHERE
     FROM villes_france_free
   );
 
+-- 9 alterative
+SELECT *
+FROM
+  villes_france_free AS v1,
+  (
+    SELECT
+      AVG(v2.ville_surface) AS surface_moyenne
+    FROM
+      villes_france_free AS v2
+  ) AS v3
+WHERE
+  ville_surface > v3.surface_moyenne;
+
 -- 10
 SELECT
   ville_departement,
