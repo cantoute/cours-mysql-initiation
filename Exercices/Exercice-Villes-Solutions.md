@@ -134,4 +134,7 @@ UPDATE villes_france_free
         ELSE 'Village'
       END;
 
+ALTER TABLE villes_france_free
+  CHANGE ville_taille ville_taille
+    ENUM('Grande ville','Ville moyenne','Village') NOT NULL;
 ```
