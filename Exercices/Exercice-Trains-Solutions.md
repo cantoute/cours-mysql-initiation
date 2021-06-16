@@ -13,6 +13,31 @@ FROM modele;
 | TER  |
 | Fret |
 +------+
+
+-- aussi acceptable même si la question serait
+-- alors : Lister les trains et leur modèle.
+SELECT
+  train.id AS train_id,
+  modele.nom AS modele_nom
+FROM train
+  JOIN modele ON train.modele_id = modele.id;
+
++----------+------------+
+| train_id | modele_nom |
++----------+------------+
+|        1 | TGV        |
+|        2 | TGV        |
+|        3 | TGV        |
+|        4 | TGV        |
+|        5 | TER        |
+|        6 | TER        |
+|        7 | TER        |
+|        8 | TER        |
+|        9 | Fret       |
+|       10 | Fret       |
+|       11 | Fret       |
+|       12 | Fret       |
++----------+------------+
 ```
 
 ## Question 2
