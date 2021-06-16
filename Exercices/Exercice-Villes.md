@@ -42,4 +42,4 @@ Veuillez trouver les requêtes SQL permettant d’effectuer chacune des demandes
 
 13. Obtenir la liste des villes en remplaçant "Saint-" par "Saint " de la colonne `ville_nom_reel` pour les villes dont le nom commence par "Saint-". Afficher une colonne `ville_taille` qui affiche 'Grande ville' (>100000 habitants), 'Ville moyenne' (entre 10000 et 100000), 'Village' (<10000).
 
-14. Ajouter un champ `ville_nom_fix` avec "Saint-" remplacé par "Saint ", une colonne `ville_taille` (`ENUM('Grande ville', 'Ville Moyenne', 'Village')`).
+14. Ajouter un champ `ville_nom_fix` avec "Saint-" remplacé par "Saint " ainsi qu'un champ `ville_taille` (`ENUM('Grande ville', 'Ville Moyenne', 'Village')`).
