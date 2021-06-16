@@ -141,6 +141,21 @@ ORDER BY nb_arr;
 
 ## Question 6
 
+Pour chaque trajet afficher le nom de la gare de départ, heure de départ, heure d'arrivée et le nom de la gare d'arrivée.
+
+```sql
+SELECT
+  gare_dep.nom AS dep_nom,
+  trajet.heure_dep,
+  trajet.heure_arr,
+  gare_arr.nom AS arr_nom
+FROM trajet
+  JOIN gare AS gare_dep on gare_dep.id = trajet.dep_gare_id
+  JOIN gare as gare_arr on gare_arr.id = trajet.arr_gare_id;
+```
+
+## Question 7
+
 Écrivez une requête qui retourne tous les trajets et leur durée. Pour cela il vous faudra utiliser les instructions `CASE`, `TIMEDIFF()` et `ADDTIME()`.
 
 ```sql
@@ -179,18 +194,3 @@ ORDER BY trajet.heure_dep;
 | Marseille | Toulouse  | 13:00:00  | 18:00:00  | 05:00:00     | TGV    |
 | Lyon      | Marseille | 15:00:00  | 23:00:00  | 08:00:00     | TER    |
 | Marseille | Lille     | 16:00:00  | 21:00:00  | 05:00:00     | TGV    |
-
-Question manquante
-
-```sql
--- afficher nom de la gare de départ, heure de départ, heure d'arrivée, gare d'arrivée
-
-SELECT
-  gare_dep.nom AS dep_nom,
-  trajet.heure_dep,
-  trajet.heure_arr,
-  gare_arr.nom AS arr_nom
-FROM trajet
-  JOIN gare AS gare_dep on gare_dep.id = trajet.dep_gare_id
-  JOIN gare as gare_arr on gare_arr.id = trajet.arr_gare_id;
-```
