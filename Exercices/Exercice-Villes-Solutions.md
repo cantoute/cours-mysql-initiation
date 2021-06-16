@@ -109,7 +109,7 @@ WHERE
 SELECT
   REPLACE(v.ville_nom_reel, 'Saint-', 'Saint ') AS ville_nom_fix,
   CASE
-    WHEN v.ville_population_2012 >= 100000 THEN 'Grande ville'
+    WHEN v.ville_population_2012 > 100000 THEN 'Grande ville'
       WHEN v.ville_population_2012 >= 10000 THEN 'Ville moyenne'
       ELSE 'Village'
   END AS ville_taille
@@ -129,7 +129,7 @@ UPDATE villes_france_free
   SET
     ville_nom_reel_fix = REPLACE(ville_nom_reel, 'Saint-', 'Saint '),
     ville_taille = CASE
-      WHEN ville_population_2012 >= 100000 THEN 'Grande ville'
+      WHEN ville_population_2012 > 100000 THEN 'Grande ville'
         WHEN ville_population_2012 >= 10000 THEN 'Ville moyenne'
         ELSE 'Village'
       END;
