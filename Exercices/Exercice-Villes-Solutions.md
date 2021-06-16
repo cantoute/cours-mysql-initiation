@@ -92,4 +92,37 @@ ORDER BY population_2012 DESC;
 UPDATE villes_france_free
 SET ville_nom = REPLACE(ville_nom, 'SAINT-', 'SAINT ')
 WHERE ville_nom LIKE 'SAINT-%';
+
+-- 12
+SELECT *
+FROM villes_france_free AS v
+WHERE v.ville_population_2012 BETWEEN 10000 AND 100000;
+
+-- équivalent
+SELECT *
+FROM villes_france_free AS v
+WHERE
+  v.ville_population_2012 >= 10000
+  AND v.ville_population_2012 <=100000;
+
+-- 13
+SELECT
+  REPLACE(v.ville_nom_reel, 'Saint-', 'Saint ') AS ville_nom_fix,
+  CASE
+    WHEN v.ville_population_2012 > 100000 THEN 'Grande'
+      WHEN v.ville_population_2012 > 10000 THEN 'Moyenne'
+      ELSE 'Petite'
+  END AS ville_taille
+FROM
+  villes_france_free AS v;
+
+-- 14
+ALTER TABLE `villes_france_free`
+  ADD `ville_nom_reel_fix` VARCHAR(255) NOT NULL
+  -- AFTER `ville_zmax`
+  ;
+
+UPDATE `villes_france_free`
+  SET ville_nom_reel_fix = REPLACE(ville_nom_reel, 'Saint-', 'Saint ');
+
 ```
