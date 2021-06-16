@@ -97,7 +97,7 @@ SELECT
   g_dep.nom AS gare_dep
 FROM
   trajet AS t
-  INNER JOIN gare AS g_dep ON
+  LEFT JOIN gare AS g_dep ON
     (g_dep.id = t.dep_gare_id)
 GROUP BY g_dep.id
 ORDER BY nb_dep DESC;
