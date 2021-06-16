@@ -123,7 +123,7 @@ SELECT
   g_arr.nom AS gare_arr
 FROM
   trajet AS t
-  INNER JOIN gare AS g_arr
+  LEFT JOIN gare AS g_arr
     ON (g_arr.id = t.arr_gare_id)
 GROUP BY g_arr.id
 ORDER BY nb_arr;
