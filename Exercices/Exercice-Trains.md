@@ -60,6 +60,10 @@ Votre client possède un réseau de chemin de fer et une base de données.
 
 ## Question 6
 
+Pour chaque trajet afficher le nom de la gare de départ, heure de départ, heure d'arrivée et le nom de la gare d'arrivée.
+
+## Question 7
+
 Écrivez une requête qui retourne tous les trajets et leur durée. Pour cela il vous faudra utiliser les instructions `CASE`, `TIMEDIFF()` et `ADDTIME()`.
 
 <!--
