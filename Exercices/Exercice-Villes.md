@@ -40,6 +40,6 @@ Veuillez trouver les requêtes SQL permettant d’effectuer chacune des demandes
 
 12. Obtenir la liste des villes qui ont entre 10000 et 100000 habitants.
 
-13. Obtenir la liste des villes en remplaçant "Saint-" par "Saint " de la colonne `ville_nom_reel` pour les villes dont le nom commence par "Saint-". Afficher une colonne ville_grande (>100000 habitants), ville_taille_moyenne (entre 10000 et 100000), village (<10000).
+13. Obtenir la liste des villes en remplaçant "Saint-" par "Saint " de la colonne `ville_nom_reel` pour les villes dont le nom commence par "Saint-". Afficher une colonne `ville_taille` qui affiche 'Grande ville' (>100000 habitants), 'Ville moyenne' (entre 10000 et 100000), 'Village' (<10000).
 
-14. Ajouter un champ `ville_nom_fix` avec "Saint-" remplacé par "Saint ", une colonne `ville_grande`, `ville_moyenne`, `village` (`SMALLINT`).
+14. Ajouter un champ `ville_nom_fix` avec "Saint-" remplacé par "Saint ", une colonne `ville_taille` (`ENUM('Grande ville', 'Ville Moyenne', 'Village')`).
