@@ -107,7 +107,11 @@ WHERE
 
 -- 13
 SELECT
-  REPLACE(v.ville_nom_reel, 'Saint-', 'Saint ') AS ville_nom_fix,
+  CASE
+  	WHEN v.ville_nom_reel LIKE 'Saint-%'
+    	THEN REPLACE(v.ville_nom_reel, 'Saint-', 'Saint ')
+    ELSE v.ville_nom_reel
+  END AS ville_nom_fix,
   CASE
     WHEN v.ville_population_2012 > 100000 THEN 'Grande ville'
       WHEN v.ville_population_2012 >= 10000 THEN 'Ville moyenne'
@@ -125,12 +129,16 @@ ALTER TABLE villes_france_free
   ADD ville_taille ENUM('Grande ville', 'Ville moyenne', 'Village') NULL
   ;
 
-UPDATE villes_france_free
+UPDATE villes_france_free AS v
   SET
-    ville_nom_reel_fix = REPLACE(ville_nom_reel, 'Saint-', 'Saint '),
-    ville_taille = CASE
-      WHEN ville_population_2012 > 100000 THEN 'Grande ville'
-        WHEN ville_population_2012 >= 10000 THEN 'Ville moyenne'
+    v.ville_nom_reel_fix = CASE
+      WHEN v.ville_nom_reel LIKE 'Saint-%'
+        THEN REPLACE(v.ville_nom_reel, 'Saint-', 'Saint ')
+      ELSE v.ville_nom_reel
+    END,
+    v.ville_taille = CASE
+      WHEN v.ville_population_2012 > 100000 THEN 'Grande ville'
+        WHEN v.ville_population_2012 >= 10000 THEN 'Ville moyenne'
         ELSE 'Village'
       END;
 
