@@ -12,6 +12,12 @@ Il convient de télécharger les bases de données d’exemples, qui seront util
 
 **\*Astuces** : gardez une sauvegarde de ces tables avant d’effectuer les exercices.\*
 
+---
+
+<img src="./Exercice-Villes-DB.png" />
+
+---
+
 ## Exercices (requêtes SQL)
 
 Veuillez trouver les requêtes SQL permettant d’effectuer chacune des demandes suivantes :
