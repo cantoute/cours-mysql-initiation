@@ -80,10 +80,11 @@ WHERE
 
 -- 10
 SELECT
-  ville_departement,
+  departement_nom,
   SUM(ville_population_2012) AS population_2012
 FROM
-  villes_france_free
+  villes_france_free AS v
+  JOIN departement AS d ON v.ville_departement = d.departement_code
 GROUP BY ville_departement
 HAVING population_2012 > 2000000
 ORDER BY population_2012 DESC;
