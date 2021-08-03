@@ -104,7 +104,9 @@ SELECT *
 FROM villes_france_free AS v
 WHERE
   v.ville_population_2012 >= 10000
-  AND v.ville_population_2012 <=100000;
+  AND v.ville_population_2012 <= 100000;
+  -- équivalent
+  -- AND v.ville_population_2012 BETWEEN 10000 AND 100000
 
 -- 13
 SELECT
