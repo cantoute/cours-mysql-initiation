@@ -1098,11 +1098,12 @@ SELECT name, SUM(units) FROM sales GROUP BY name;
 +---------+------------+
 ```
 
-La clause `GROUPE BY` est requise quand on la combine avec d'autres données au risque d'obtenir des donnée non cohérentes. Voici un exemple d'erreur fréquent:
+La clause `GROUP BY` est requise quand on la combine avec d'autres données au risque d'obtenir des donnée non cohérentes. Voici un exemple d'erreur fréquent:
 
 ```sql
-SELECT `name`, SUM(units) FROM sales
-;+------+------------+
+SELECT `name`, SUM(units) FROM sales;
+
++------+------------+
 | name | SUM(units) |
 +------+------------+
 | Chun |        536 |
