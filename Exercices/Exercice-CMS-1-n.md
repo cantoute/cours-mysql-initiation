@@ -1,5 +1,7 @@
 # Exercice : un CMS relation 1 à n
 
+<img src="../images/cms-1-n.png" />
+
 ```sql
 DROP TABLE IF EXISTS `post`;
 DROP TABLE IF EXISTS `category`;
