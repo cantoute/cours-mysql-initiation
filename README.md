@@ -80,10 +80,11 @@ Le language standard pour dialoguer avec une base de données est le SQL
 
   - **MariaDB**
 
-    Dès 2009, l’équipe de développement et le fondateur de MySQL Michael Monty Widenius tournait le dos au populaire système de base de données et a lancé le fork à source ouverte MariaDB. Fin 2012, Fedora, OpenSUSE, Slackware et Arch Linux présentaient les premières distributions Linux pour passer de MySQL à MariaDB comme installation standard. De nombreux projets open source, ainsi que les sociétés de logiciels bien connus et plateformes Web ont suivi cet exemple, à l’image de Mozilla, Ubuntu, Google, Red Hat Entreprise Linux, Web of Trust, TeamSpeak, la fondation Wikimedia ainsi que le projet de logiciels XAMPP.<br>
+    Dès 2009, l’équipe de développement et le fondateur de MySQL Michael Monty Widenius tournait le dos au système de base de données populaire et a lancé le fork à source ouverte MariaDB.
+
+    Fin 2012, Fedora, OpenSUSE, Slackware et Arch Linux présentaient les premières distributions Linux pour passer de MySQL à MariaDB comme installation standard. De nombreux projets open source, ainsi que les sociétés de logiciels bien connus et plateformes Web ont suivi cet exemple, à l’image de Mozilla, Ubuntu, Google, Red Hat Entreprise Linux, Web of Trust, TeamSpeak, la fondation Wikimedia ainsi que le projet de logiciels XAMPP.
+
     MariaDB se caractérise déjà par un développement continu, en comparaison avec d’autres systèmes MySQL open source. Il est donc probable que ce fork dépasse un jour son projet-mère.
-    Note personnelle : si vous envisagez le développement d'une grosse application (nombreuse tables, nombreuses liaisons, usage de GROUP BY sur de grosses tables), MariaDB hérite de tous les points faibles de MySql. PostgreSQL est plus performant, bien plus robuste.
-    MySql, son point fort est phpMyAdmin qui vous permet gérer votre base de données facilement.
 
     - points forts :
       - hébergement très répendu et bon marché.
@@ -94,7 +95,7 @@ Le language standard pour dialoguer avec une base de données est le SQL
 
   - **PostgreSQL**
 
-    A ce jour, elle reste la base de donnée la plus robuste disponible. Les plus grandes bases de données mondiales sont sous PostgreSQL (Yahoo).
+    A ce jour, elle reste la base de donnée la plus robuste disponible. Les plus grandes bases de données mondiales sont sous PostgreSQL (ex: Yahoo).
 
     Toutefois sa mise en route et le déploiement d'applications apportent un surcoût (serveur dédié).
 
