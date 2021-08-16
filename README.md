@@ -75,8 +75,7 @@ Le language standard pour dialoguer avec une base de données est le SQL
 
   - **MySql**
 
-    Logiciel développé par la société suédoise MySQL AB en 1994 est désormais sous le patronage d’Oracle Corporation et est distribué sur la base d’un système de double licence. En dehors de la version propriétaire entreprise, Oracle offre une licence GPL open source.<br>
-    _Note personnelle&thinsp;: MySql est devenu un piège à pigeons&thinsp;! (Au demeurant très lucratif pour Oracle.)_
+    Logiciel développé par la société suédoise MySQL AB en 1994 est désormais sous le patronage d’Oracle Corporation et est distribué sur la base d’un système de double licence. En dehors de la version propriétaire entreprise, Oracle offre une licence GPL open source.
 
   - **MariaDB**
 
@@ -107,7 +106,7 @@ Le language standard pour dialoguer avec une base de données est le SQL
 
     Vous l'utilisez tous les jours : historique de votre navigateur, carnet d'adresse de votre téléphone portable, etc...
 
-    Elle peut être utilisée comme base de donnée locale à l'intérieur même du navigateur (javascript) ou coté serveur. Elle est souvent utilisée pour les phases de développement lorsqu'on utilise un ORM (une représentation objet de la base de donnée).
+    Elle peut être utilisée comme base de donnée locale à l'intérieur même du navigateur (javascript) ou coté serveur. Elle est souvent utilisée pour les phases de développement. (On utilisera alors un ORM - une abstraction objet de la base de donnée. Ex: RedBeanPHP, Doctrine ORM).
 
 - **Propriétaire / Closed Source**
 
