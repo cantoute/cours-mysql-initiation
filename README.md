@@ -71,7 +71,7 @@ Le language standard pour dialoguer avec une base de données est le SQL
 
 ### Principaux produits disponibles
 
-- Open Source
+- **Open Source**
 
   - **MySql**
 
@@ -82,13 +82,15 @@ Le language standard pour dialoguer avec une base de données est le SQL
 
     Dès 2009, l’équipe de développement et le fondateur de MySQL Michael Monty Widenius tournait le dos au populaire système de base de données et a lancé le fork à source ouverte MariaDB. Fin 2012, Fedora, OpenSUSE, Slackware et Arch Linux présentaient les premières distributions Linux pour passer de MySQL à MariaDB comme installation standard. De nombreux projets open source, ainsi que les sociétés de logiciels bien connus et plateformes Web ont suivi cet exemple, à l’image de Mozilla, Ubuntu, Google, Red Hat Entreprise Linux, Web of Trust, TeamSpeak, la fondation Wikimedia ainsi que le projet de logiciels XAMPP.<br>
     MariaDB se caractérise déjà par un développement continu, en comparaison avec d’autres systèmes MySQL open source. Il est donc probable que ce fork dépasse un jour son projet-mère.
-    Note personnelle : si vous envisagez le développement d'une grosse application (nombreuse tables, nombreuses liaisons, usage de GROUP BY sur de grosses tables), MariaDB hérite de tous les points faibles de MySql et vous décevra. PostgreSQL est 500x plus performant, bien plus robuste, c'est un outil professionnel. MySql, c'est pour faire du vite "torché", son point fort est phpMyAdmin qui vous permet gérer votre base de données au "click-o-drôme".
+    Note personnelle : si vous envisagez le développement d'une grosse application (nombreuse tables, nombreuses liaisons, usage de GROUP BY sur de grosses tables), MariaDB hérite de tous les points faibles de MySql. PostgreSQL est plus performant, bien plus robuste.
+    MySql, son point fort est phpMyAdmin qui vous permet gérer votre base de données facilement.
 
-    - points forts : phpMyAdmin, hébergement bon marché, beaucoup de code près à l'emploi disponible en php. Parfait pour débuter.
+    - points forts :
+      - hébergement très répendu et bon marché.
+      - beaucoup de code près à l'emploi disponible en php. Parfait pour débuter.
+      - phpMyAdmin
     - points faibles :
-      - 63 tables max. dans une requête. En fait ses performances se dégradent grandement dès qu'il y a de nombreuses jointures.
-      - MySQL gère très mal les GROUP BY.
-      - Nombreuses limitations sur la taille des index qui dans le cas du utf8mb4 se rencontrent facilement : champ VARCHAR(191) en mb4 est la limite pour les index.
+      - Les performances se dégradent dès qu'il y a de nombreuses jointures.
 
   - **PostgreSQL**
 
@@ -106,7 +108,7 @@ Le language standard pour dialoguer avec une base de données est le SQL
 
     Elle peut être utilisée comme base de donnée locale à l'intérieur même du navigateur (javascript) ou coté serveur. Elle est souvent utilisée pour les phases de développement lorsqu'on utilise un ORM (une représentation objet de la base de donnée).
 
-- **Closed Source**
+- **Propriétaire / Closed Source**
 
   - **Oracle**
 
